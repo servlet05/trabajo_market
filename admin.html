@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - MaestroMX</title>
+    <link rel="icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- ============================================
+    LOGIN
+    ============================================ -->
+    <div id="loginContainer" style="max-width: 400px; margin: 5rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="color: var(--primary);">🔐 Acceso Administrativo</h2>
+            <p style="color: var(--gray);">Ingresa la contraseña para gestionar trabajos</p>
+        </div>
+        <input type="password" id="adminPassword" placeholder="Contraseña" 
+               style="width: 100%; padding: 0.8rem; margin: 1rem 0; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem;">
+        <button onclick="loginAdmin()" class="contact-btn phone" style="width: 100%; justify-content: center; font-size: 1.1rem;">
+            <i class="fas fa-sign-in-alt"></i> Acceder
+        </button>
+        <p id="loginError" style="color: var(--danger); text-align: center; margin-top: 1rem;"></p>
+    </div>
+
+    <!-- ============================================
+    PANEL ADMIN (oculto por defecto)
+    ============================================ -->
+    <div id="adminPanel" style="display: none;">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo">
+                🛠️ Maestro<span>MX</span>
+                <span style="font-size: 0.8rem; background: var(--primary-dark); padding: 0.2rem 0.8rem; border-radius: 20px; margin-left: 0.5rem;">
+                    Admin
+                </span>
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <span style="opacity: 0.8; font-size: 0.9rem;">
+                    <i class="fas fa-user"></i> Administrador
+                </span>
+                <button onclick="logoutAdmin()" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 0.5rem 1.5rem; border-radius: 8px; cursor: pointer; transition: var(--transition);">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </nav>
+
+        <!-- Contenido -->
+        <div style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+            <!-- Estadísticas -->
+            <div id="stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;"></div>
+
+            <!-- Botones de acción -->
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <button onclick="showNewJobForm()" class="contact-btn phone" style="font-size: 1rem;">
+                    <i class="fas fa-plus-circle"></i> Nuevo Trabajo
+                </button>
+                <button onclick="exportJobs()" class="contact-btn website" style="font-size: 1rem;">
+                    <i class="fas fa-download"></i> Exportar JSON
+                </button>
+                <button onclick="refreshJobs()" class="contact-btn" style="background: var(--gray); color: white; font-size: 1rem;">
+                    <i class="fas fa-sync"></i> Actualizar
+                </button>
+            </div>
+
+            <!-- Formulario (oculto) -->
+            <div id="jobForm" style="display: none; background: var(--gray-light); padding: 2rem; border-radius: var(--radius); margin-bottom: 2rem;">
+                <h3 id="formTitle" style="color: var(--primary); margin-bottom: 1rem;">
+                    <i class="fas fa-edit"></i> Nuevo Trabajo
+                </h3>
+                <input type="hidden" id="editJobId">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Título *</label>
+                        <input type="text" id="jobTitle" placeholder="Ej: Reparación de PC" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Categoría *</label>
+                        <select id="jobCategory" style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                            <option value="💻 Sistemas">💻 Sistemas</option>
+                            <option value="⚡ Electricista">⚡ Electricista</option>
+                            <option value="🔧 Plomero">🔧 Plomero</option>
+                            <option value="🪚 Mueblero">🪚 Mueblero</option>
+                            <option value="🔩 Ferretero">🔩 Ferretero</option>
+                            <option value="🛠️ Handyman">🛠️ Handyman</option>
+                            <option value="🌿 Jardinero">🌿 Jardinero</option>
+                            <option value="🎨 Pintor">🎨 Pintor</option>
+                            <option value="🪵 Carpintero">🪵 Carpintero</option>
+                            <option value="🧹 Limpieza">🧹 Limpieza</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Ubicación *</label>
+                        <input type="text" id="jobLocation" placeholder="Ej: CDMX, Roma Norte" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Precio</label>
+                        <input type="text" id="jobPrice" placeholder="Ej: $500 MXN" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Fecha</label>
+                        <input type="date" id="jobDate" style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Hora</label>
+                        <input type="time" id="jobTime" style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Estado *</label>
+                        <select id="jobStatus" style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                            <option value="available">🟢 Disponible</option>
+                            <option value="progress">🟡 En proceso</option>
+                            <option value="closed">🔴 Cerrado</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Código único</label>
+                        <input type="text" id="jobCode" placeholder="Ej: MX-2026-001" 
+                               style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <!-- Contactos -->
+                <div style="margin: 1rem 0;">
+                    <h4 style="margin-bottom: 0.5rem;">📞 Métodos de Contacto</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Teléfono</label>
+                            <input type="text" id="contactPhone" placeholder="Ej: 5512345678" 
+                                   style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">WhatsApp</label>
+                            <input type="text" id="contactWhatsapp" placeholder="Ej: 5512345678" 
+                                   style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Email</label>
+                            <input type="email" id="contactEmail" placeholder="Ej: cliente@email.com" 
+                                   style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Sitio Web</label>
+                            <input type="url" id="contactWebsite" placeholder="Ej: https://empresa.com" 
+                                   style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                        </div>
+                        <div>
+                            <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Método preferido</label>
+                            <select id="contactPreferred" style="width: 100%; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px;">
+                                <option value="">Seleccionar...</option>
+                                <option value="phone">📱 Teléfono</option>
+                                <option value="whatsapp">💬 WhatsApp</option>
+                                <option value="email">✉️ Email</option>
+                                <option value="website">🌐 Sitio Web</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div>
+                    <label style="font-weight: 500; display: block; margin-bottom: 0.3rem;">Descripción *</label>
+                    <textarea id="jobDescription" placeholder="Descripción detallada del trabajo..." 
+                              style="width: 100%; min-height: 120px; padding: 0.8rem; border: 2px solid #e5e7eb; border-radius: 8px; resize: vertical;"></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <button onclick="saveJob()" class="contact-btn phone" style="font-size: 1rem;">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                    <button onclick="cancelForm()" style="background: #e5e7eb; border: none; padding: 0.8rem 2rem; border-radius: 8px; cursor: pointer; font-size: 1rem;">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lista de Trabajos -->
+            <div id="jobsList"></div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# .gitignore
+.DS_Store
+node_modules/
+*.log
+.env
+*.swp
+*.swo
+.vscode/
+.idea/
+*.iml
+Thumbs.db
+*.tmp
+*.temp
