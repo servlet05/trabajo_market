@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>MaestroMX - Trabajos cerca de ti</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <style>
-        /* ============================================
-           TODOS LOS ESTILOS AQUÍ DENTRO
-           ============================================ */
-        
-        /* RESET Y VARIABLES */
+        /* ===== TODOS TUS ESTILOS AQUÍ (copia los que ya tenías) ===== */
         :root {
             --primary: #FF7F00;
             --primary-dark: #E65C00;
@@ -32,12 +27,7 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--gray-light);
@@ -46,9 +36,7 @@
             overflow-x: hidden;
         }
 
-        /* ============================================
-           SPLASH SCREEN
-           ============================================ */
+        /* SPLASH */
         #splashScreen {
             position: fixed;
             top: 0;
@@ -62,95 +50,24 @@
             z-index: 9999;
             animation: splashFade 0.5s ease;
         }
+        .splash-content { text-align: center; color: white; animation: splashPulse 2s ease-in-out infinite; }
+        .splash-logo { font-size: 6rem; animation: splashBounce 1.5s ease-in-out infinite; }
+        .splash-title { font-size: 3rem; font-weight: 800; margin-top: 0.5rem; letter-spacing: -1px; }
+        .splash-title span { color: rgba(255,255,255,0.8); }
+        .splash-subtitle { font-size: 1.2rem; opacity: 0.9; margin-top: 0.5rem; font-weight: 300; }
+        .splash-loader { margin-top: 2rem; width: 200px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; margin-left: auto; margin-right: auto; }
+        .loader-bar { height: 100%; background: white; width: 0%; border-radius: 4px; animation: loaderProgress 2.5s ease-in-out forwards; }
 
-        .splash-content {
-            text-align: center;
-            color: white;
-            animation: splashPulse 2s ease-in-out infinite;
-        }
+        @keyframes splashFade { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
+        @keyframes splashPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes splashBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes loaderProgress { 0% { width: 0%; } 100% { width: 100%; } }
 
-        .splash-logo {
-            font-size: 6rem;
-            animation: splashBounce 1.5s ease-in-out infinite;
-        }
+        /* APP */
+        #app { max-width: 480px; margin: 0 auto; background: var(--gray-light); min-height: 100vh; padding-bottom: 80px; animation: appFadeIn 0.5s ease; }
+        @keyframes appFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .splash-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-top: 0.5rem;
-            letter-spacing: -1px;
-        }
-
-        .splash-title span {
-            color: rgba(255,255,255,0.8);
-        }
-
-        .splash-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-top: 0.5rem;
-            font-weight: 300;
-        }
-
-        .splash-loader {
-            margin-top: 2rem;
-            width: 200px;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .loader-bar {
-            height: 100%;
-            background: white;
-            width: 0%;
-            border-radius: 4px;
-            animation: loaderProgress 2.5s ease-in-out forwards;
-        }
-
-        @keyframes splashFade {
-            from { opacity: 0; transform: scale(1.1); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes splashPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-        }
-
-        @keyframes splashBounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes loaderProgress {
-            0% { width: 0%; }
-            100% { width: 100%; }
-        }
-
-        /* ============================================
-           APP PRINCIPAL
-           ============================================ */
-        #app {
-            max-width: 480px;
-            margin: 0 auto;
-            background: var(--gray-light);
-            min-height: 100vh;
-            padding-bottom: 80px;
-            animation: appFadeIn 0.5s ease;
-        }
-
-        @keyframes appFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ============================================
-           HEADER
-           ============================================ */
+        /* HEADER */
         .app-header {
             background: var(--white);
             padding: 1rem 1.2rem;
@@ -162,170 +79,55 @@
             z-index: 100;
             box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .header-logo {
-            font-size: 1.8rem;
-        }
-
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .header-right {
-            display: flex;
-            gap: 0.5rem;
-        }
-
+        .header-left { display: flex; align-items: center; gap: 0.5rem; }
+        .header-logo { font-size: 1.8rem; }
+        .header-title { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+        .header-right { display: flex; gap: 0.5rem; }
         .header-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: var(--gray-light);
-            border-radius: 50%;
-            font-size: 1.1rem;
-            color: var(--gray-dark);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 40px; height: 40px; border: none; background: var(--gray-light);
+            border-radius: 50%; font-size: 1.1rem; color: var(--gray-dark);
+            cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
         }
+        .header-btn:active { transform: scale(0.9); }
 
-        .header-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* ============================================
-           SEARCH BAR
-           ============================================ */
-        .search-bar {
-            background: var(--white);
-            padding: 0.8rem 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-        }
-
+        /* SEARCH */
+        .search-bar { background: var(--white); padding: 0.8rem 1.2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .search-input-big {
-            width: 100%;
-            padding: 0.8rem 1.2rem;
-            border: 2px solid #E2E8F0;
-            border-radius: var(--radius-sm);
-            font-size: 1rem;
-            outline: none;
+            width: 100%; padding: 0.8rem 1.2rem; border: 2px solid #E2E8F0;
+            border-radius: var(--radius-sm); font-size: 1rem; outline: none;
             transition: var(--transition);
         }
+        .search-input-big:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(255,127,0,0.1); }
 
-        .search-input-big:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(255,127,0,0.1);
-        }
-
-        /* ============================================
-           CATEGORÍAS
-           ============================================ */
+        /* CATEGORÍAS - Ocultas por defecto (puedes quitarlas si quieres) */
         .categories-section {
             background: var(--white);
-            padding: 1rem 1.2rem;
+            padding: 0.5rem 1.2rem;
             border-bottom: 1px solid #E2E8F0;
+            display: none; /* ← Oculta las categorías */
         }
-
-        .categories-scroll {
-            display: flex;
-            gap: 0.6rem;
-            overflow-x: auto;
-            padding: 0.2rem 0;
-            scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .categories-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
+        .categories-scroll { display: flex; gap: 0.6rem; overflow-x: auto; padding: 0.2rem 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        .categories-scroll::-webkit-scrollbar { display: none; }
         .category-pill {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            padding: 0.6rem 1.2rem;
-            border: 2px solid #E2E8F0;
-            border-radius: 50px;
-            background: var(--white);
-            cursor: pointer;
-            transition: var(--transition);
-            white-space: nowrap;
-            font-size: 0.9rem;
-            font-weight: 500;
-            flex-shrink: 0;
-            font-family: inherit;
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.5rem 1rem; border: 2px solid #E2E8F0; border-radius: 50px;
+            background: var(--white); cursor: pointer; transition: var(--transition);
+            white-space: nowrap; font-size: 0.85rem; font-weight: 500; flex-shrink: 0;
         }
+        .category-pill:active { transform: scale(0.95); }
+        .category-pill .pill-icon { font-size: 1rem; }
+        .category-pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(255,127,0,0.3); }
 
-        .category-pill:active {
-            transform: scale(0.95);
-        }
+        /* JOBS */
+        .jobs-section { padding: 1rem 1.2rem; }
+        .jobs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .jobs-title { font-size: 1.1rem; font-weight: 600; color: var(--gray-dark); }
+        .jobs-title span { color: var(--primary); font-weight: 700; }
+        .filter-btn { width: 40px; height: 40px; border: none; background: var(--white); border-radius: 50%; font-size: 1rem; color: var(--gray); cursor: pointer; box-shadow: var(--shadow); transition: var(--transition); }
+        .filter-btn:active { transform: scale(0.9); }
 
-        .category-pill .pill-icon {
-            font-size: 1.2rem;
-        }
-
-        .category-pill.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(255,127,0,0.3);
-        }
-
-        /* ============================================
-           JOBS LIST
-           ============================================ */
-        .jobs-section {
-            padding: 1rem 1.2rem;
-        }
-
-        .jobs-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .jobs-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--gray-dark);
-        }
-
-        .jobs-title span {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .filter-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: var(--white);
-            border-radius: 50%;
-            font-size: 1rem;
-            color: var(--gray);
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-        }
-
-        .filter-btn:active {
-            transform: scale(0.9);
-        }
-
-        /* ============================================
-           TARJETA DE TRABAJO
-           ============================================ */
+        /* JOB CARD */
         .job-card {
             background: var(--white);
             border-radius: var(--radius);
@@ -337,413 +139,111 @@
             position: relative;
             overflow: hidden;
         }
-
-        .job-card:active {
-            transform: scale(0.98);
-        }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .job-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 0.5rem;
-        }
-
-        .job-card-category {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--gray);
-            background: var(--gray-light);
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-        }
-
-        .job-card-status {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .status-available {
-            background: #C6F6D5;
-            color: #276749;
-        }
-
-        .status-progress {
-            background: #FEEBC8;
-            color: #9C4221;
-        }
-
-        .status-closed {
-            background: #FED7D7;
-            color: #9B2C2C;
-        }
-
-        .job-card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin: 0.3rem 0;
-            color: var(--text-dark);
-            line-height: 1.3;
-        }
-
-        .job-card-details {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
-            color: var(--gray);
-            margin: 0.3rem 0;
-            flex-wrap: wrap;
-        }
-
-        .job-card-details span {
-            display: flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
-
-        .job-card-price {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 0.3rem 0;
-        }
-
-        .job-card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 0.8rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid #E2E8F0;
-        }
-
-        .job-card-contact {
-            display: flex;
-            gap: 0.5rem;
-        }
-
+        .job-card:active { transform: scale(0.98); }
+        .job-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); border-radius: 0 4px 4px 0; }
+        .job-card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; }
+        .job-card-category { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600; color: var(--gray); background: var(--gray-light); padding: 0.2rem 0.8rem; border-radius: 20px; }
+        .job-card-status { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
+        .status-available { background: #C6F6D5; color: #276749; }
+        .status-progress { background: #FEEBC8; color: #9C4221; }
+        .status-closed { background: #FED7D7; color: #9B2C2C; }
+        .job-card-title { font-size: 1.1rem; font-weight: 700; margin: 0.3rem 0; color: var(--text-dark); line-height: 1.3; }
+        .job-card-details { display: flex; gap: 1rem; font-size: 0.85rem; color: var(--gray); margin: 0.3rem 0; flex-wrap: wrap; }
+        .job-card-details span { display: flex; align-items: center; gap: 0.2rem; }
+        .job-card-price { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin: 0.3rem 0; }
+        .job-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid #E2E8F0; }
+        .job-card-contact { display: flex; gap: 0.5rem; }
         .contact-icon-btn {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 40px; height: 40px; border: none; border-radius: 50%;
+            font-size: 1.2rem; cursor: pointer; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
             text-decoration: none;
         }
+        .contact-icon-btn:active { transform: scale(0.9); }
+        .contact-icon-btn.phone { background: #EBF5FF; color: #3182CE; }
+        .contact-icon-btn.whatsapp { background: #E6FFFA; color: #25D366; }
+        .contact-icon-btn.email { background: #FFF5F5; color: #E53E3E; }
+        .job-card-views { font-size: 0.7rem; color: var(--gray); }
 
-        .contact-icon-btn:active {
-            transform: scale(0.9);
-        }
+        /* ESTADOS */
+        .loading-state { text-align: center; padding: 3rem 1rem; }
+        .loading-spinner { width: 40px; height: 40px; border: 4px solid var(--gray-light); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .empty-state { text-align: center; padding: 3rem 1rem; }
+        .empty-icon { font-size: 4rem; margin-bottom: 1rem; }
+        .empty-state h3 { font-size: 1.2rem; color: var(--gray-dark); margin-bottom: 0.5rem; }
+        .empty-state p { color: var(--gray); margin-bottom: 1.5rem; }
 
-        .contact-icon-btn.phone {
-            background: #EBF5FF;
-            color: #3182CE;
-        }
-
-        .contact-icon-btn.whatsapp {
-            background: #E6FFFA;
-            color: #25D366;
-        }
-
-        .contact-icon-btn.email {
-            background: #FFF5F5;
-            color: #E53E3E;
-        }
-
-        .job-card-views {
-            font-size: 0.7rem;
-            color: var(--gray);
-        }
-
-        /* ============================================
-           ESTADOS
-           ============================================ */
-        .loading-state {
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--gray-light);
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-        }
-
-        .empty-state h3 {
-            font-size: 1.2rem;
-            color: var(--gray-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-state p {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-        }
-
-        /* ============================================
-           BOTONES
-           ============================================ */
+        /* BOTONES */
         .btn-primary {
             background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: var(--radius-sm);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: white; border: none; padding: 0.8rem 2rem;
+            border-radius: var(--radius-sm); font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.5rem;
             box-shadow: 0 4px 16px rgba(255,127,0,0.3);
-            font-family: inherit;
         }
+        .btn-primary:active { transform: scale(0.95); }
 
-        .btn-primary:active {
-            transform: scale(0.95);
-        }
-
-        /* ============================================
-           FAB
-           ============================================ */
+        /* FAB */
         .fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 60px;
-            height: 60px;
-            border: none;
-            border-radius: 50%;
-            background: var(--primary-gradient);
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(255,127,0,0.4);
-            transition: var(--transition);
-            z-index: 99;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; bottom: 2rem; right: 2rem;
+            width: 60px; height: 60px; border: none; border-radius: 50%;
+            background: var(--primary-gradient); color: white; font-size: 2rem;
+            cursor: pointer; box-shadow: 0 4px 20px rgba(255,127,0,0.4);
+            transition: var(--transition); z-index: 99;
+            display: flex; align-items: center; justify-content: center;
         }
+        .fab:active { transform: scale(0.9); }
+        .fab i { font-size: 1.8rem; }
 
-        .fab:active {
-            transform: scale(0.9);
-        }
+        /* FOOTER */
+        .app-footer { text-align: center; padding: 1.5rem 1rem; color: var(--gray); font-size: 0.8rem; }
+        .app-footer .footer-small { font-size: 0.7rem; opacity: 0.7; margin-top: 0.2rem; }
 
-        .fab i {
-            font-size: 1.8rem;
-        }
-
-        /* ============================================
-           FOOTER
-           ============================================ */
-        .app-footer {
-            text-align: center;
-            padding: 1.5rem 1rem;
-            color: var(--gray);
-            font-size: 0.8rem;
-        }
-
-        .app-footer .footer-small {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 0.2rem;
-        }
-
-        /* ============================================
-           MODAL
-           ============================================ */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            animation: fadeIn 0.3s ease;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            max-width: 400px;
-            width: 100%;
-            padding: 2rem;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            width: 40px;
-            height: 40px;
-            border: none;
-            background: var(--gray-light);
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: inherit;
-        }
-
+        /* MODAL */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; animation: fadeIn 0.3s ease; padding: 1rem; }
+        .modal-content { background: white; border-radius: 20px; max-width: 400px; width: 100%; padding: 2rem; max-height: 80vh; overflow-y: auto; position: relative; }
+        .modal-close { position: absolute; top: 0.5rem; right: 0.5rem; width: 40px; height: 40px; border: none; background: var(--gray-light); border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .contact-btn-large {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.95rem;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.6rem 1.2rem; border-radius: 50px;
+            text-decoration: none; font-weight: 600; transition: all 0.2s;
+            border: none; cursor: pointer; font-size: 0.95rem;
         }
+        .contact-btn-large:active { transform: scale(0.95); }
+        .contact-btn-large.phone { background: #3182CE; color: white; }
+        .contact-btn-large.whatsapp { background: #25D366; color: white; }
+        .contact-btn-large.email { background: #E53E3E; color: white; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .contact-btn-large:active {
-            transform: scale(0.95);
-        }
-
-        .contact-btn-large.phone {
-            background: #3182CE;
-            color: white;
-        }
-
-        .contact-btn-large.whatsapp {
-            background: #25D366;
-            color: white;
-        }
-
-        .contact-btn-large.email {
-            background: #E53E3E;
-            color: white;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
         @media (min-width: 768px) {
-            #app {
-                max-width: 600px;
-                border-radius: 20px;
-                margin: 20px auto;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            }
-            
-            .splash-title {
-                font-size: 4rem;
-            }
+            #app { max-width: 600px; border-radius: 20px; margin: 20px auto; box-shadow: 0 10px 40px rgba(0,0,0,0.08); }
+            .splash-title { font-size: 4rem; }
         }
-
         @media (max-width: 480px) {
-            .job-card-title {
-                font-size: 1rem;
-            }
-            
-            .job-card-details {
-                font-size: 0.75rem;
-                gap: 0.5rem;
-            }
-            
-            .contact-icon-btn {
-                width: 36px;
-                height: 36px;
-                font-size: 1rem;
-            }
-            
-            .fab {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
-                bottom: 1.5rem;
-                right: 1.5rem;
-            }
-
-            .splash-logo {
-                font-size: 4rem;
-            }
-
-            .splash-title {
-                font-size: 2.2rem;
-            }
+            .job-card-title { font-size: 1rem; }
+            .job-card-details { font-size: 0.75rem; gap: 0.5rem; }
+            .contact-icon-btn { width: 36px; height: 36px; font-size: 1rem; }
+            .fab { width: 50px; height: 50px; font-size: 1.5rem; bottom: 1.5rem; right: 1.5rem; }
+            .splash-logo { font-size: 4rem; }
+            .splash-title { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================
-    SPLASH SCREEN
-    ============================================ -->
+    <!-- SPLASH SCREEN -->
     <div id="splashScreen">
         <div class="splash-content">
             <div class="splash-logo">🛠️</div>
             <h1 class="splash-title">Maestro<span>MX</span></h1>
             <p class="splash-subtitle">Trabajos cerca de ti</p>
-            <div class="splash-loader">
-                <div class="loader-bar"></div>
-            </div>
+            <div class="splash-loader"><div class="loader-bar"></div></div>
         </div>
     </div>
 
-    <!-- ============================================
-    APP PRINCIPAL
-    ============================================ -->
+    <!-- APP PRINCIPAL -->
     <div id="app" style="display: none;">
 
         <!-- HEADER -->
@@ -767,9 +267,9 @@
             <input type="text" id="searchInput" placeholder="🔍 Buscar trabajo..." class="search-input-big">
         </div>
 
-        <!-- CATEGORÍAS -->
-        <section class="categories-section" style="display:none;">
-    <div class="categories-scroll" id="categoryScroll">
+        <!-- CATEGORÍAS (OCULTAS) -->
+        <section class="categories-section">
+            <div class="categories-scroll" id="categoryScroll">
                 <!-- Generado por JavaScript -->
             </div>
         </section>
@@ -817,29 +317,18 @@
 
     </div>
 
-    <!-- ============================================
-    JAVASCRIPT
-    ============================================ -->
     <script>
         // ============================================
         // CONFIGURACIÓN
         // ============================================
         const CONFIG = {
             siteName: 'MaestroMX',
-            region: {
-                countryCode: '52',
-                currency: 'MXN',
-            },
-            adminContact: {
-                phone: '5512345678',
-            },
-            colors: {
-                primary: '#FF7F00',
-            }
+            region: { countryCode: '52', currency: 'MXN' },
+            adminContact: { phone: '5512345678' }
         };
 
         // ============================================
-        // DATOS DE EJEMPLO (si no hay JSON)
+        // DATOS DE EJEMPLO
         // ============================================
         const SAMPLE_JOBS = [
             {
@@ -853,13 +342,7 @@
                 status: "available",
                 code: "MX-2026-001",
                 description: "Se necesita técnico para revisar 5 PCs con problemas de rendimiento e instalar cableado de red en oficina pequeña.",
-                contact: {
-                    phone: "5512345678",
-                    whatsapp: "5512345678",
-                    email: "empresa@ejemplo.com",
-                    website: "https://ejemplo.com",
-                    preferred: "whatsapp"
-                },
+                contact: { phone: "5512345678", whatsapp: "5512345678", email: "empresa@ejemplo.com", website: null },
                 views: 12,
                 created_at: "2026-07-08T10:00:00Z"
             },
@@ -874,57 +357,9 @@
                 status: "available",
                 code: "MX-2026-002",
                 description: "Instalación de 4 contactos nuevos y 3 lámparas LED en departamento remodelado.",
-                contact: {
-                    phone: "3312345678",
-                    whatsapp: "3312345678",
-                    email: null,
-                    website: null,
-                    preferred: "phone"
-                },
+                contact: { phone: "3312345678", whatsapp: "3312345678", email: null, website: null },
                 views: 8,
                 created_at: "2026-07-08T11:00:00Z"
-            },
-            {
-                id: 3,
-                title: "Reparación de muebles de madera",
-                category: "🪚 Mueblero",
-                location: "Monterrey, San Pedro",
-                price: "$1,200 MXN",
-                date: "2026-07-12",
-                time: "09:00",
-                status: "available",
-                code: "MX-2026-003",
-                description: "Reparación de 2 sillas antiguas y una mesa de comedor. Se requiere experiencia en restauración de madera.",
-                contact: {
-                    phone: "8112345678",
-                    whatsapp: null,
-                    email: "muebles@ejemplo.com",
-                    website: null,
-                    preferred: "email"
-                },
-                views: 5,
-                created_at: "2026-07-08T12:00:00Z"
-            },
-            {
-                id: 4,
-                title: "Instalación de sistema de cámaras",
-                category: "💻 Sistemas",
-                location: "Querétaro, Centro",
-                price: "$2,500 MXN",
-                date: "2026-07-13",
-                time: "08:00",
-                status: "available",
-                code: "MX-2026-004",
-                description: "Instalación de 4 cámaras de seguridad IP y grabador NVR en oficina corporativa.",
-                contact: {
-                    phone: "4421234567",
-                    whatsapp: "4421234567",
-                    email: "seguridad@empresa.com",
-                    website: null,
-                    preferred: "whatsapp"
-                },
-                views: 3,
-                created_at: "2026-07-08T13:00:00Z"
             }
         ];
 
@@ -943,7 +378,6 @@
                 const splash = document.getElementById('splashScreen');
                 splash.style.transition = 'opacity 0.5s ease';
                 splash.style.opacity = '0';
-                
                 setTimeout(() => {
                     splash.style.display = 'none';
                     document.getElementById('app').style.display = 'block';
@@ -959,36 +393,53 @@
             await loadJobs();
             renderCategories();
             setupEventListeners();
+            // Actualizar cada 30 segundos (para ver cambios del admin)
+            setInterval(() => {
+                loadJobs();
+            }, 30000);
         }
 
         // ============================================
-        // CARGAR TRABAJOS
+        // CARGAR TRABAJOS - ¡VERSIÓN CON LOCALSTORAGE!
         // ============================================
         async function loadJobs() {
             try {
-                // Intentar cargar desde JSON
-                const response = await fetch('data/trabajos.json');
-                if (response.ok) {
-                    allJobs = await response.json();
+                // PRIMERO: Intentar cargar desde localStorage (donde guarda el admin)
+                const localData = localStorage.getItem('maestromx_jobs');
+                
+                if (localData) {
+                    allJobs = JSON.parse(localData);
+                    console.log('✅ Cargado desde localStorage:', allJobs.length, 'trabajos');
                 } else {
-                    // Si falla, usar datos de ejemplo
-                    allJobs = SAMPLE_JOBS;
-                    console.log('Usando datos de ejemplo');
+                    // Si no hay datos en localStorage, intentar cargar desde JSON
+                    const response = await fetch('data/trabajos.json');
+                    if (response.ok) {
+                        allJobs = await response.json();
+                        localStorage.setItem('maestromx_jobs', JSON.stringify(allJobs));
+                        console.log('✅ Cargado desde JSON:', allJobs.length, 'trabajos');
+                    } else {
+                        allJobs = SAMPLE_JOBS;
+                        localStorage.setItem('maestromx_jobs', JSON.stringify(allJobs));
+                        console.log('⚠️ Usando datos de ejemplo');
+                    }
                 }
+                
+                const availableJobs = allJobs.filter(job => job.status !== 'closed');
+                displayJobs(availableJobs);
+                updateCount(availableJobs.length);
+                
+                document.getElementById('loadingJobs').style.display = 'none';
+                if (availableJobs.length === 0) {
+                    document.getElementById('emptyState').style.display = 'block';
+                }
+                
             } catch (error) {
-                // Si hay error, usar datos de ejemplo
+                console.error('Error cargando trabajos:', error);
                 allJobs = SAMPLE_JOBS;
-                console.log('Error cargando JSON, usando datos de ejemplo:', error);
-            }
-            
-            const availableJobs = allJobs.filter(job => job.status !== 'closed');
-            displayJobs(availableJobs);
-            updateCount(availableJobs.length);
-            
-            document.getElementById('loadingJobs').style.display = 'none';
-            
-            if (availableJobs.length === 0) {
-                document.getElementById('emptyState').style.display = 'block';
+                localStorage.setItem('maestromx_jobs', JSON.stringify(allJobs));
+                displayJobs(allJobs);
+                updateCount(allJobs.length);
+                document.getElementById('loadingJobs').style.display = 'none';
             }
         }
 
@@ -997,88 +448,49 @@
         // ============================================
         function displayJobs(jobs) {
             const container = document.getElementById('jobsContainer');
-            
             if (jobs.length === 0) {
                 container.innerHTML = '';
                 document.getElementById('emptyState').style.display = 'block';
                 return;
             }
-            
             document.getElementById('emptyState').style.display = 'none';
             
             container.innerHTML = jobs.map(job => `
                 <div class="job-card" onclick="showJobDetail(${job.id})">
                     <div class="job-card-header">
-                        <span class="job-card-category">
-                            ${getCategoryIcon(job.category)} ${job.category}
-                        </span>
-                        <span class="job-card-status status-${job.status}">
-                            ${getStatusEmoji(job.status)} ${getStatusText(job.status)}
-                        </span>
+                        <span class="job-card-category">${getCategoryIcon(job.category)} ${job.category}</span>
+                        <span class="job-card-status status-${job.status}">${getStatusEmoji(job.status)} ${getStatusText(job.status)}</span>
                     </div>
-                    
                     <h3 class="job-card-title">${job.title}</h3>
-                    
                     <div class="job-card-details">
                         <span>📍 ${job.location}</span>
                         <span>📅 ${job.date}</span>
                         ${job.time ? `<span>⏰ ${job.time}</span>` : ''}
                     </div>
-                    
                     <div class="job-card-price">${job.price}</div>
-                    
                     <div class="job-card-footer">
-                        <div class="job-card-contact">
-                            ${renderContactIcons(job.contact)}
-                        </div>
+                        <div class="job-card-contact">${renderContactIcons(job.contact)}</div>
                         <span class="job-card-views">👁️ ${job.views || 0}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ============================================
-        // RENDERIZAR ÍCONOS DE CONTACTO
-        // ============================================
         function renderContactIcons(contact) {
             if (!contact) return '';
-            
             let icons = '';
-            
             if (contact.phone) {
-                icons += `
-                    <a href="tel:+${CONFIG.region.countryCode}${contact.phone}" 
-                       class="contact-icon-btn phone" 
-                       onclick="event.stopPropagation();">
-                        <i class="fas fa-phone"></i>
-                    </a>
-                `;
+                icons += `<a href="tel:+${CONFIG.region.countryCode}${contact.phone}" class="contact-icon-btn phone" onclick="event.stopPropagation();"><i class="fas fa-phone"></i></a>`;
             }
-            
             if (contact.whatsapp) {
                 const number = contact.whatsapp.replace(/-/g, '');
                 const msg = encodeURIComponent('Hola, vi tu trabajo en MaestroMX');
-                icons += `
-                    <a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" 
-                       target="_blank" 
-                       class="contact-icon-btn whatsapp"
-                       onclick="event.stopPropagation();">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
-                `;
+                icons += `<a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" target="_blank" class="contact-icon-btn whatsapp" onclick="event.stopPropagation();"><i class="fab fa-whatsapp"></i></a>`;
             }
-            
             if (contact.email) {
                 const subject = encodeURIComponent('Trabajo MaestroMX');
-                icons += `
-                    <a href="mailto:${contact.email}?subject=${subject}" 
-                       class="contact-icon-btn email"
-                       onclick="event.stopPropagation();">
-                        <i class="fas fa-envelope"></i>
-                    </a>
-                `;
+                icons += `<a href="mailto:${contact.email}?subject=${subject}" class="contact-icon-btn email" onclick="event.stopPropagation();"><i class="fas fa-envelope"></i></a>`;
             }
-            
             return icons || '<span style="font-size:0.7rem;color:var(--gray);">Sin contacto</span>';
         }
 
@@ -1087,46 +499,34 @@
         // ============================================
         function renderCategories() {
             const container = document.getElementById('categoryScroll');
-            
             const categories = [...new Set(allJobs.map(job => job.category))];
-            
             let html = `
                 <button class="category-pill active" data-category="all" onclick="filterJobs('all', this)">
-                    <span class="pill-icon">📋</span>
-                    <span class="pill-label">Todos</span>
+                    <span class="pill-icon">📋</span><span class="pill-label">Todos</span>
                 </button>
             `;
-            
             categories.forEach(cat => {
                 html += `
                     <button class="category-pill" data-category="${cat}" onclick="filterJobs('${cat}', this)">
-                        <span class="pill-icon">${getCategoryIcon(cat)}</span>
-                        <span class="pill-label">${cat}</span>
+                        <span class="pill-icon">${getCategoryIcon(cat)}</span><span class="pill-label">${cat}</span>
                     </button>
                 `;
             });
-            
             container.innerHTML = html;
         }
 
-        // ============================================
-        // FILTRAR
-        // ============================================
         function filterJobs(category, button) {
             document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
             button.classList.add('active');
-            
             currentFilter = category;
             applyFilters();
         }
 
         function applyFilters() {
             let filtered = allJobs.filter(job => job.status !== 'closed');
-            
             if (currentFilter !== 'all') {
                 filtered = filtered.filter(job => job.category === currentFilter);
             }
-            
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
                 filtered = filtered.filter(job => 
@@ -1135,7 +535,6 @@
                     job.location.toLowerCase().includes(term)
                 );
             }
-            
             displayJobs(filtered);
             updateCount(filtered.length);
         }
@@ -1147,40 +546,23 @@
             const match = category.match(/^([^\s]+)/);
             return match ? match[1] : '🛠️';
         }
-
         function getStatusEmoji(status) {
-            const map = {
-                'available': '🟢',
-                'progress': '🟡',
-                'closed': '🔴'
-            };
+            const map = { 'available': '🟢', 'progress': '🟡', 'closed': '🔴' };
             return map[status] || '⚪';
         }
-
         function getStatusText(status) {
-            const map = {
-                'available': 'Disponible',
-                'progress': 'En proceso',
-                'closed': 'Cerrado'
-            };
+            const map = { 'available': 'Disponible', 'progress': 'En proceso', 'closed': 'Cerrado' };
             return map[status] || status;
         }
-
         function updateCount(count) {
             document.getElementById('jobsCount').textContent = count;
         }
-
         function scrollToCategories() {
-            document.querySelector('.categories-section').scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'center'
-            });
+            document.querySelector('.categories-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
         function toggleSearch() {
             const bar = document.getElementById('searchBar');
             const input = document.getElementById('searchInput');
-            
             if (bar.style.display === 'none') {
                 bar.style.display = 'block';
                 setTimeout(() => input.focus(), 100);
@@ -1191,11 +573,18 @@
                 applyFilters();
             }
         }
-
         function contactAdmin() {
             const phone = '5512345678';
             const msg = encodeURIComponent('Hola, quiero publicar un trabajo en MaestroMX');
             window.open(`https://wa.me/52${phone.replace(/-/g, '')}?text=${msg}`, '_blank');
+        }
+
+        function setupEventListeners() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                searchTerm = this.value.trim();
+                applyFilters();
+            });
         }
 
         // ============================================
@@ -1204,107 +593,58 @@
         function showJobDetail(jobId) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
-            
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay';
-            
             overlay.innerHTML = `
                 <div class="modal-content">
                     <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
-                    
-                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
-                        <span style="font-size: 1.5rem;">${getCategoryIcon(job.category)}</span>
-                        <span style="font-weight: 600; color: var(--gray);">${job.category}</span>
-                        <span class="job-card-status status-${job.status}" style="margin-left: auto;">
-                            ${getStatusEmoji(job.status)} ${getStatusText(job.status)}
-                        </span>
+                    <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.5rem;">
+                        <span style="font-size:1.5rem;">${getCategoryIcon(job.category)}</span>
+                        <span style="font-weight:600;color:var(--gray);">${job.category}</span>
+                        <span class="job-card-status status-${job.status}" style="margin-left:auto;">${getStatusEmoji(job.status)} ${getStatusText(job.status)}</span>
                     </div>
-                    
-                    <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${job.title}</h2>
-                    
-                    <div style="display: flex; gap: 0.8rem; font-size: 0.9rem; color: var(--gray); margin: 0.5rem 0; flex-wrap: wrap;">
+                    <h2 style="font-size:1.5rem;margin:0.5rem 0;">${job.title}</h2>
+                    <div style="display:flex;gap:0.8rem;font-size:0.9rem;color:var(--gray);margin:0.5rem 0;flex-wrap:wrap;">
                         <span>📍 ${job.location}</span>
                         <span>📅 ${job.date} ${job.time || ''}</span>
                         <span>💰 ${job.price}</span>
                     </div>
-                    
-                    <div style="background: var(--gray-light); padding: 1rem; border-radius: var(--radius-sm); margin: 1rem 0;">
-                        <p style="color: var(--text-dark); line-height: 1.6;">${job.description}</p>
+                    <div style="background:var(--gray-light);padding:1rem;border-radius:var(--radius-sm);margin:1rem 0;">
+                        <p style="color:var(--text-dark);line-height:1.6;">${job.description}</p>
                     </div>
-                    
-                    <div style="margin: 1rem 0;">
-                        <p style="font-weight: 600; margin-bottom: 0.5rem;">📞 Contactar:</p>
-                        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                    <div style="margin:1rem 0;">
+                        <p style="font-weight:600;margin-bottom:0.5rem;">📞 Contactar:</p>
+                        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
                             ${renderContactButtons(job.contact)}
                         </div>
                     </div>
-                    
-                    <div style="font-size: 0.8rem; color: var(--gray); text-align: center; padding-top: 0.5rem; border-top: 1px solid #E2E8F0;">
+                    <div style="font-size:0.8rem;color:var(--gray);text-align:center;padding-top:0.5rem;border-top:1px solid #E2E8F0;">
                         🔒 Trabajo verificado · 📌 ${job.code || 'N/A'}
                     </div>
                 </div>
             `;
-            
             document.body.appendChild(overlay);
-            
             overlay.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.remove();
-                }
+                if (e.target === this) this.remove();
             });
         }
 
-        // ============================================
-        // RENDERIZAR BOTONES DE CONTACTO (MODAL)
-        // ============================================
         function renderContactButtons(contact) {
             if (!contact) return '<span style="color:var(--gray);">Sin contacto disponible</span>';
-            
             let buttons = '';
-            
             if (contact.phone) {
-                buttons += `
-                    <a href="tel:+${CONFIG.region.countryCode}${contact.phone}" 
-                       class="contact-btn-large phone">
-                        <i class="fas fa-phone"></i> Llamar
-                    </a>
-                `;
+                buttons += `<a href="tel:+${CONFIG.region.countryCode}${contact.phone}" class="contact-btn-large phone"><i class="fas fa-phone"></i> Llamar</a>`;
             }
-            
             if (contact.whatsapp) {
                 const number = contact.whatsapp.replace(/-/g, '');
                 const msg = encodeURIComponent('Hola, vi tu trabajo en MaestroMX');
-                buttons += `
-                    <a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" 
-                       target="_blank" 
-                       class="contact-btn-large whatsapp">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
-                    </a>
-                `;
+                buttons += `<a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" target="_blank" class="contact-btn-large whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
             }
-            
             if (contact.email) {
                 const subject = encodeURIComponent('Trabajo MaestroMX');
-                buttons += `
-                    <a href="mailto:${contact.email}?subject=${subject}" 
-                       class="contact-btn-large email">
-                        <i class="fas fa-envelope"></i> Email
-                    </a>
-                `;
+                buttons += `<a href="mailto:${contact.email}?subject=${subject}" class="contact-btn-large email"><i class="fas fa-envelope"></i> Email</a>`;
             }
-            
             return buttons || '<span style="color:var(--gray);">Sin contacto disponible</span>';
-        }
-
-        // ============================================
-        // EVENT LISTENERS
-        // ============================================
-        function setupEventListeners() {
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', function() {
-                searchTerm = this.value.trim();
-                applyFilters();
-            });
         }
     </script>
 
