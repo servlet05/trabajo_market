@@ -1,4 +1,4 @@
-// js/app.js - Lógica de la landing page
+// js/app.js - Lógica ultra user-friendly
 
 // ============================================
 // VARIABLES GLOBALES
@@ -8,13 +8,32 @@ let currentFilter = 'all';
 let searchTerm = '';
 
 // ============================================
-// INICIALIZACIÓN
+// SPLASH SCREEN
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    loadJobs();
-    setupEventListeners();
-    renderCategories();
+    // Mostrar splash por 2.5 segundos
+    setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        splash.style.transition = 'opacity 0.5s ease';
+        splash.style.opacity = '0';
+        
+        setTimeout(() => {
+            splash.style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            // Inicializar app
+            initApp();
+        }, 500);
+    }, 2500);
 });
+
+// ============================================
+// INICIALIZAR APP
+// ============================================
+async function initApp() {
+    await loadJobs();
+    renderCategories();
+    setupEventListeners();
+}
 
 // ============================================
 // CARGAR TRABAJOS
@@ -24,28 +43,26 @@ async function loadJobs() {
         const response = await fetch('data/trabajos.json');
         allJobs = await response.json();
         
-        // Solo mostrar trabajos disponibles (no cerrados)
         const availableJobs = allJobs.filter(job => job.status !== 'closed');
-        
         displayJobs(availableJobs);
-        updateStats(availableJobs);
+        updateCount(availableJobs.length);
         
-        document.getElementById('loadingIndicator').style.display = 'none';
+        document.getElementById('loadingJobs').style.display = 'none';
         
         if (availableJobs.length === 0) {
             document.getElementById('emptyState').style.display = 'block';
         }
         
     } catch (error) {
-        console.error('Error cargando trabajos:', error);
-        document.getElementById('loadingIndicator').innerHTML = `
-            <p style="color: var(--danger);">❌ Error al cargar los trabajos. Recarga la página.</p>
+        console.error('Error:', error);
+        document.getElementById('loadingJobs').innerHTML = `
+            <p style="color: var(--danger);">❌ Error al cargar. Recarga la página.</p>
         `;
     }
 }
 
 // ============================================
-// MOSTRAR TRABAJOS
+// MOSTRAR TRABAJOS - Tarjetas visuales
 // ============================================
 function displayJobs(jobs) {
     const container = document.getElementById('jobsContainer');
@@ -59,149 +76,128 @@ function displayJobs(jobs) {
     document.getElementById('emptyState').style.display = 'none';
     
     container.innerHTML = jobs.map(job => `
-        <div class="job-card" data-job-id="${job.id}">
-            <div class="job-header">
-                <div>
-                    <span class="status-badge status-${job.status}">
-                        ${getStatusIcon(job.status)} ${getStatusText(job.status)}
-                    </span>
-                    <span class="job-category">${job.category}</span>
-                </div>
-                <span class="job-code">📌 #${job.code || 'N/A'}</span>
+        <div class="job-card" onclick="showJobDetail(${job.id})">
+            <div class="job-card-header">
+                <span class="job-card-category">
+                    ${getCategoryIcon(job.category)} ${job.category}
+                </span>
+                <span class="job-card-status status-${job.status}">
+                    ${getStatusEmoji(job.status)} ${getStatusText(job.status)}
+                </span>
             </div>
             
-            <h3>${job.title}</h3>
+            <h3 class="job-card-title">${job.title}</h3>
             
-            <div class="job-details">
+            <div class="job-card-details">
                 <span>📍 ${job.location}</span>
-                <span>📅 ${job.date} ${job.time || ''}</span>
-                <span>💰 ${job.price}</span>
+                <span>📅 ${job.date}</span>
+                ${job.time ? `<span>⏰ ${job.time}</span>` : ''}
             </div>
             
-            <p class="job-description">${job.description}</p>
+            <div class="job-card-price">${job.price}</div>
             
-            <!-- SECCIÓN DE CONTACTO -->
-            <div class="contact-section">
-                <div class="contact-label">📞 Métodos de contacto:</div>
-                <div class="contact-buttons">
-                    ${renderContactButtons(job.contact)}
+            <div class="job-card-footer">
+                <div class="job-card-contact">
+                    ${renderContactIcons(job.contact)}
                 </div>
-                ${job.contact?.preferred ? `
-                    <div class="contact-preferred">
-                        ⭐ El cliente prefiere contacto por: 
-                        <span>${getPreferredMethodLabel(job.contact.preferred)}</span>
-                    </div>
-                ` : ''}
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-size: 0.8rem; color: var(--gray);">
-                <span>🔒 Trabajo verificado por MaestroMX</span>
-                <span>📊 ${job.views || 0} vistas</span>
+                <span class="job-card-views">👁️ ${job.views || 0}</span>
             </div>
         </div>
     `).join('');
 }
 
 // ============================================
-// RENDERIZAR BOTONES DE CONTACTO
+// RENDERIZAR ÍCONOS DE CONTACTO
 // ============================================
-function renderContactButtons(contact) {
-    if (!contact) return '<span style="color: var(--gray);">Sin métodos de contacto disponibles</span>';
+function renderContactIcons(contact) {
+    if (!contact) return '';
     
-    let buttons = '';
+    let icons = '';
     
-    // Teléfono
     if (contact.phone) {
-        buttons += `
-            <a href="tel:+${CONFIG.countryCode}${contact.phone}" class="contact-btn phone">
-                <i class="fas fa-phone"></i> Llamar
+        icons += `
+            <a href="tel:+${CONFIG.region.countryCode}${contact.phone}" 
+               class="contact-icon-btn phone" 
+               onclick="event.stopPropagation();">
+                <i class="fas fa-phone"></i>
             </a>
         `;
     }
     
-    // WhatsApp
     if (contact.whatsapp) {
-        const whatsappNumber = contact.whatsapp.replace(/-/g, '');
-        const message = encodeURIComponent('Hola, vi tu trabajo en MaestroMX y estoy interesado');
-        buttons += `
-            <a href="https://wa.me/${CONFIG.countryCode}${whatsappNumber}?text=${message}" 
-               target="_blank" class="contact-btn whatsapp">
-                <i class="fab fa-whatsapp"></i> WhatsApp
+        const number = contact.whatsapp.replace(/-/g, '');
+        const msg = encodeURIComponent('Hola, vi tu trabajo en MaestroMX');
+        icons += `
+            <a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" 
+               target="_blank" 
+               class="contact-icon-btn whatsapp"
+               onclick="event.stopPropagation();">
+                <i class="fab fa-whatsapp"></i>
             </a>
         `;
     }
     
-    // Email
     if (contact.email) {
-        const subject = encodeURIComponent(`Trabajo MaestroMX - Interesado`);
-        buttons += `
-            <a href="mailto:${contact.email}?subject=${subject}" class="contact-btn email">
-                <i class="fas fa-envelope"></i> Email
+        const subject = encodeURIComponent('Trabajo MaestroMX');
+        icons += `
+            <a href="mailto:${contact.email}?subject=${subject}" 
+               class="contact-icon-btn email"
+               onclick="event.stopPropagation();">
+                <i class="fas fa-envelope"></i>
             </a>
         `;
     }
     
-    // Website
-    if (contact.website) {
-        buttons += `
-            <a href="${contact.website}" target="_blank" class="contact-btn website">
-                <i class="fas fa-globe"></i> Sitio Web
-            </a>
-        `;
-    }
-    
-    return buttons || '<span style="color: var(--gray);">Sin métodos de contacto disponibles</span>';
+    return icons || '<span style="font-size:0.7rem;color:var(--gray);">Sin contacto</span>';
 }
 
 // ============================================
 // RENDERIZAR CATEGORÍAS
 // ============================================
 function renderCategories() {
-    const container = document.getElementById('categoryFilters');
+    const container = document.getElementById('categoryScroll');
     
-    // Obtener categorías únicas de los trabajos
+    // Obtener categorías únicas
     const categories = [...new Set(allJobs.map(job => job.category))];
     
-    // Agregar botón "Todos"
-    let html = `<button class="category-btn active" data-category="all">📋 Todos</button>`;
+    let html = `
+        <button class="category-pill active" data-category="all" onclick="filterJobs('all', this)">
+            <span class="pill-icon">📋</span>
+            <span class="pill-label">Todos</span>
+        </button>
+    `;
     
-    // Agregar cada categoría
     categories.forEach(cat => {
         html += `
-            <button class="category-btn" data-category="${cat}">
-                ${cat}
+            <button class="category-pill" data-category="${cat}" onclick="filterJobs('${cat}', this)">
+                <span class="pill-icon">${getCategoryIcon(cat)}</span>
+                <span class="pill-label">${cat}</span>
             </button>
         `;
     });
     
     container.innerHTML = html;
-    
-    // Agregar event listeners a los botones
-    container.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Quitar active de todos
-            container.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            // Agregar active al clickeado
-            this.classList.add('active');
-            // Filtrar
-            currentFilter = this.dataset.category;
-            applyFilters();
-        });
-    });
 }
 
 // ============================================
 // FILTRAR TRABAJOS
 // ============================================
+function filterJobs(category, button) {
+    // Actualizar active
+    document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+    button.classList.add('active');
+    
+    currentFilter = category;
+    applyFilters();
+}
+
 function applyFilters() {
     let filtered = allJobs.filter(job => job.status !== 'closed');
     
-    // Filtrar por categoría
     if (currentFilter !== 'all') {
         filtered = filtered.filter(job => job.category === currentFilter);
     }
     
-    // Filtrar por búsqueda
     if (searchTerm) {
         const term = searchTerm.toLowerCase();
         filtered = filtered.filter(job => 
@@ -212,88 +208,245 @@ function applyFilters() {
     }
     
     displayJobs(filtered);
-    updateStats(filtered);
+    updateCount(filtered.length);
 }
 
 // ============================================
-// ACTUALIZAR ESTADÍSTICAS
+// FUNCIONES DE UTILIDAD
 // ============================================
-function updateStats(jobs) {
-    const total = jobs.length;
-    const available = jobs.filter(j => j.status === 'available').length;
-    const progress = jobs.filter(j => j.status === 'progress').length;
-    
-    // Actualizar badge del hero
-    const badge = document.querySelector('.hero .badge');
-    if (badge) {
-        badge.textContent = `✅ ${total} trabajos disponibles · ${available} activos · Sin comisiones`;
-    }
+function getCategoryIcon(category) {
+    // Extraer el emoji de la categoría
+    const match = category.match(/^([^\s]+)/);
+    return match ? match[1] : '🛠️';
 }
 
-// ============================================
-// FUNCIONES AUXILIARES
-// ============================================
-function getStatusIcon(status) {
-    const icons = {
+function getStatusEmoji(status) {
+    const map = {
         'available': '🟢',
         'progress': '🟡',
         'closed': '🔴'
     };
-    return icons[status] || '⚪';
+    return map[status] || '⚪';
 }
 
 function getStatusText(status) {
-    const texts = {
+    const map = {
         'available': 'Disponible',
         'progress': 'En proceso',
         'closed': 'Cerrado'
     };
-    return texts[status] || status;
+    return map[status] || status;
 }
 
-function getPreferredMethodLabel(method) {
-    const labels = {
-        'phone': '📱 Llamada',
-        'whatsapp': '💬 WhatsApp',
-        'email': '✉️ Email',
-        'website': '🌐 Sitio Web'
-    };
-    return labels[method] || method;
+function updateCount(count) {
+    document.getElementById('jobsCount').textContent = count;
+}
+
+// ============================================
+// MOSTRAR DETALLE DEL TRABAJO
+// ============================================
+function showJobDetail(jobId) {
+    const job = allJobs.find(j => j.id === jobId);
+    if (!job) return;
+    
+    // Crear modal con detalles
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        animation: fadeIn 0.3s ease;
+        padding: 1rem;
+    `;
+    
+    modal.innerHTML = `
+        <div style="
+            background: white;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        ">
+            <button onclick="this.closest('div[style]').remove()" style="
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                width: 40px;
+                height: 40px;
+                border: none;
+                background: var(--gray-light);
+                border-radius: 50%;
+                font-size: 1.2rem;
+                cursor: pointer;
+            ">✕</button>
+            
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.5rem;">${getCategoryIcon(job.category)}</span>
+                <span style="font-weight: 600; color: var(--gray);">${job.category}</span>
+                <span class="job-card-status status-${job.status}" style="margin-left: auto;">
+                    ${getStatusEmoji(job.status)} ${getStatusText(job.status)}
+                </span>
+            </div>
+            
+            <h2 style="font-size: 1.5rem; margin: 0.5rem 0;">${job.title}</h2>
+            
+            <div style="display: flex; gap: 0.8rem; font-size: 0.9rem; color: var(--gray); margin: 0.5rem 0; flex-wrap: wrap;">
+                <span>📍 ${job.location}</span>
+                <span>📅 ${job.date} ${job.time || ''}</span>
+                <span>💰 ${job.price}</span>
+            </div>
+            
+            <div style="background: var(--gray-light); padding: 1rem; border-radius: var(--radius-sm); margin: 1rem 0;">
+                <p style="color: var(--text-dark); line-height: 1.6;">${job.description}</p>
+            </div>
+            
+            <div style="margin: 1rem 0;">
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">📞 Contactar:</p>
+                <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+                    ${renderContactButtons(job.contact)}
+                </div>
+            </div>
+            
+            <div style="font-size: 0.8rem; color: var(--gray); text-align: center; padding-top: 0.5rem; border-top: 1px solid #E2E8F0;">
+                🔒 Trabajo verificado · 📌 ${job.code || 'N/A'}
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Cerrar al hacer clic fuera
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.remove();
+        }
+    });
+}
+
+// ============================================
+// RENDERIZAR BOTONES DE CONTACTO (para modal)
+// ============================================
+function renderContactButtons(contact) {
+    if (!contact) return '<span style="color:var(--gray);">Sin contacto disponible</span>';
+    
+    let buttons = '';
+    
+    if (contact.phone) {
+        buttons += `
+            <a href="tel:+${CONFIG.region.countryCode}${contact.phone}" 
+               class="contact-btn phone" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                background: #3182CE;
+                color: white;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.2s;
+            ">
+                <i class="fas fa-phone"></i> Llamar
+            </a>
+        `;
+    }
+    
+    if (contact.whatsapp) {
+        const number = contact.whatsapp.replace(/-/g, '');
+        const msg = encodeURIComponent('Hola, vi tu trabajo en MaestroMX');
+        buttons += `
+            <a href="https://wa.me/${CONFIG.region.countryCode}${number}?text=${msg}" 
+               target="_blank" 
+               class="contact-btn whatsapp" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                background: #25D366;
+                color: white;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.2s;
+            ">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        `;
+    }
+    
+    if (contact.email) {
+        const subject = encodeURIComponent('Trabajo MaestroMX');
+        buttons += `
+            <a href="mailto:${contact.email}?subject=${subject}" 
+               class="contact-btn email" style="
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.6rem 1.2rem;
+                background: #E53E3E;
+                color: white;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.2s;
+            ">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+        `;
+    }
+    
+    return buttons || '<span style="color:var(--gray);">Sin contacto disponible</span>';
+}
+
+// ============================================
+// FUNCIONES DE INTERFAZ
+// ============================================
+function toggleSearch() {
+    const bar = document.getElementById('searchBar');
+    const input = document.getElementById('searchInput');
+    
+    if (bar.style.display === 'none') {
+        bar.style.display = 'block';
+        setTimeout(() => input.focus(), 100);
+    } else {
+        bar.style.display = 'none';
+        input.value = '';
+        searchTerm = '';
+        applyFilters();
+    }
+}
+
+function toggleFilters() {
+    // Por ahora solo scroll a categorías
+    document.querySelector('.categories-section').scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'center'
+    });
+}
+
+function contactAdmin() {
+    const phone = window.CONFIG?.adminContact?.phone || '5512345678';
+    const msg = encodeURIComponent('Hola, quiero publicar un trabajo en MaestroMX');
+    window.open(`https://wa.me/52${phone.replace(/-/g, '')}?text=${msg}`, '_blank');
 }
 
 // ============================================
 // EVENT LISTENERS
 // ============================================
 function setupEventListeners() {
-    // Búsqueda en tiempo real
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', function() {
         searchTerm = this.value.trim();
         applyFilters();
     });
-}
-
-// ============================================
-// REPORTAR ABUSO
-// ============================================
-function reportAbuse() {
-    const message = encodeURIComponent(
-        '🚨 Reporte de abuso - MaestroMX\n\n' +
-        'Por favor describe el problema:\n' +
-        '- Número de trabajo (si lo tienes): \n' +
-        '- Descripción del problema: '
-    );
-    window.open(`https://wa.me/${CONFIG.countryCode}${CONFIG.adminContact.phone}?text=${message}`, '_blank');
-}
-
-// ============================================
-// EXPORTAR PARA USO EN OTROS SCRIPTS
-// ============================================
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        loadJobs,
-        displayJobs,
-        applyFilters,
-        reportAbuse
-    };
 }
