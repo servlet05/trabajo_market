@@ -1,0 +1,104 @@
+/* styles/admin.css - Estilos para el panel administrativo */
+
+/* ============================================
+   LOGIN
+   ============================================ */
+#loginContainer {
+    animation: fadeIn 0.5s ease;
+}
+
+#loginContainer input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255,127,0,0.1);
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+#jobForm {
+    animation: slideDown 0.3s ease;
+}
+
+#jobForm input:focus,
+#jobForm textarea:focus,
+#jobForm select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255,127,0,0.1);
+}
+
+#jobForm label {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+/* ============================================
+   LISTA DE TRABAJOS
+   ============================================ */
+#jobsList .job-card {
+    transition: var(--transition);
+}
+
+#jobsList .job-card:hover {
+    background: var(--gray-light);
+    transform: translateX(4px);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    #jobForm > div:first-of-type {
+        grid-template-columns: 1fr !important;
+    }
+    
+    #jobForm > div:last-of-type > div {
+        grid-template-columns: 1fr !important;
+    }
+    
+    #stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #stats {
+        grid-template-columns: 1fr 1fr !important;
+    }
+    
+    #jobsList .job-card {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    #jobsList .job-card > div:last-child {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
